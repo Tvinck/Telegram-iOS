@@ -19,18 +19,18 @@ jobs:
         with:
           xcode-version: latest
 
-      - name: Install Metal Toolchain
+      - name: Install iOS Platform & Metal Toolchain
         run: |
+          xcodebuild -downloadPlatform iOS
           xcodebuild -downloadComponent MetalToolchain
-          echo "Metal toolchain installed"
+          echo "iOS Platform and Metal Toolchain installed"
 
       - name: Show environment
         run: |
           xcodebuild -version
           xcode-select -p
-          xcrun metal --version || echo "metal check done"
+          xcodebuild -showsdks | grep iOS
           python3 --version
-          echo "Disk space:"
           df -h /
 
       - name: Build IPA
