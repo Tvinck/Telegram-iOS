@@ -19,10 +19,16 @@ jobs:
         with:
           xcode-version: latest
 
+      - name: Install Metal Toolchain
+        run: |
+          xcodebuild -downloadComponent MetalToolchain
+          echo "Metal toolchain installed"
+
       - name: Show environment
         run: |
           xcodebuild -version
           xcode-select -p
+          xcrun metal --version || echo "metal check done"
           python3 --version
           echo "Disk space:"
           df -h /
