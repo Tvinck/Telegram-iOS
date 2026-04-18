@@ -1,0 +1,54 @@
+name: Build TeleX IPA
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-26
+    timeout-minutes: 120
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Setup Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest
+
+      - name: Show environment
+        run: |
+          xcodebuild -version
+          xcode-select -p
+          python3 --version
+          echo "Disk space:"
+          df -h /
+
+      - name: Build IPA
+        run: |
+          python3 build-system/Make/Make.py \
+            --overrideXcodeVersion \
+            build \
+            --configurationPath=build-system/appstore-configuration.json \
+            --buildNumber=100001 \
+            --configuration=release_arm64 \
+            --codesigningInformationPath=build-system/fake-codesigning \
+            --outputBuildArtifactsPath=./build-output
+
+      - name: Upload IPA artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: TeleX-IPA
+          path: ./build-output/Telegram.ipa
+          if-no-files-found: warn
+
+      - name: Upload DSYMs
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: TeleX-DSYMs
+          path: ./build-output/Telegram.DSYMs.zip
+          if-no-files-found: ignore
