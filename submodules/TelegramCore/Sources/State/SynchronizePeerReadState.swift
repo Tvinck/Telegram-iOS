@@ -246,9 +246,9 @@ private func pushPeerReadState(network: Network, postbox: Postbox, stateManager:
         |> mapToSignal { inputPeer -> Signal<PeerReadState, PeerReadStateValidationError> in
             switch inputPeer {
             case let .inputPeerChannel(inputPeerChannelData):
-                let (channelId, accessHash) = (inputPeerChannelData.channelId, inputPeerChannelData.accessHash)
+                let (_, _) = (inputPeerChannelData.channelId, inputPeerChannelData.accessHash)
                 switch readState {
-                case let .idBased(maxIncomingReadId, _, _, _, markedUnread):
+                case let .idBased(_, _, _, _, markedUnread):
                     var pushSignal: Signal<Void, NoError> = .complete()
                     if markedUnread {
                         pushSignal = pushSignal
@@ -272,7 +272,7 @@ private func pushPeerReadState(network: Network, postbox: Postbox, stateManager:
                 }
             default:
                 switch readState {
-                case let .idBased(maxIncomingReadId, _, _, _, markedUnread):
+                case let .idBased(_, _, _, _, markedUnread):
                     var pushSignal: Signal<Void, NoError> = .complete()
 
                     if markedUnread {
