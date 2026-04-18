@@ -129,7 +129,7 @@ public final class MeshTransform {
         self.faces.append(face)
     }
     
-    public consuming func makeValue() -> Value? {
+    public func makeValue() -> Value? {
         let result = self.vertices.withUnsafeMutableBufferPointer { vertices -> NSObject? in
             return self.faces.withUnsafeMutableBufferPointer { faces -> NSObject? in
                 return invokeTransformCreateCustomMethod(

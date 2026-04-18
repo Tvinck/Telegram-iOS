@@ -1,0 +1,73 @@
+No matching processes belonging to you were found
+Computing main repo mapping: 
+Loading: 
+Loading: 1 packages loaded
+Analyzing: target //Telegram:Telegram_xcodeproj (1 packages loaded, 0 targets configured)
+Analyzing: target //Telegram:Telegram_xcodeproj (1 packages loaded, 0 targets configured)
+
+INFO: Analyzed target //Telegram:Telegram_xcodeproj (1 packages loaded, 1 target configured).
+INFO: Found 1 target...
+Target //Telegram:Telegram_xcodeproj up-to-date:
+  bazel-bin/Telegram/Telegram_xcodeproj-runner.sh
+INFO: Elapsed time: 0.443s, Critical Path: 0.00s
+INFO: 1 process: 10 action cache hit, 1 internal.
+INFO: Build completed successfully, 1 total action
+INFO: Running command line: bazel-bin/Telegram/Telegram_xcodeproj-runner.sh
+
+Generating "Telegram/Telegram.xcodeproj"
+INFO: Invocation ID: 0922a8a8-281d-4250-b8d7-f4e95f864ac1
+INFO: Options provided by the client:
+  Inherited 'common' options: --isatty=0 --terminal_columns=80
+INFO: Reading rc options for 'run' from /Users/macbookpro/Desktop/форк/Telegram-iOS/.bazelrc:
+  Inherited 'common' options: --features=swift.index_while_building --features=swift.use_global_index_store --features=swift.use_global_module_cache --features=oso_prefix_is_pwd
+INFO: Reading rc options for 'run' from /Users/macbookpro/Desktop/форк/Telegram-iOS/xcodeproj.bazelrc:
+  Inherited 'build' options: --announce_rc --features=swift.use_global_module_cache --verbose_failures --remote_cache_async --@build_bazel_rules_swift//swift:copt=-j --@build_bazel_rules_swift//swift:copt=2 --define=buildNumber=10000 --disk_cache=/Users/macbookpro/telegram-bazel-cache --//Telegram:disableExtensions --//Telegram:disableStripping --features=-swift.debug_prefix_map --features=swift.emit_swiftsourceinfo
+INFO: Reading rc options for 'run' from /Users/macbookpro/Desktop/форк/Telegram-iOS/.bazelrc:
+  Inherited 'build' options: --action_env=ZERO_AR_DATE=1 --apple_platform_type=ios --enable_platform_specific_config --apple_crosstool_top=@local_config_apple_cc//:toolchain --crosstool_top=@local_config_apple_cc//:toolchain --host_crosstool_top=@local_config_apple_cc//:toolchain --per_file_copt=.*.m$,@-fno-objc-msgsend-selector-stubs --per_file_copt=.*.mm$,@-fno-objc-msgsend-selector-stubs --features=debug_prefix_map_pwd_is_dot --features=swift.cacheable_swiftmodules --features=swift.debug_prefix_map --features=swift.enable_vfsoverlays --strategy=Genrule=standalone --spawn_strategy=standalone --strategy=SwiftCompile=worker
+INFO: Found applicable config definition common:rules_xcodeproj_generator in file /private/var/tmp/_bazel_macbookpro/170550dc58bb510d8baa7b59657c81c9/execroot/_main/bazel-out/darwin_x86_64-fastbuild/bin/Telegram/Telegram_xcodeproj.bazelrc: --config=rules_xcodeproj
+INFO: Found applicable config definition common:rules_xcodeproj in file /private/var/folders/3k/m7lrzkcs54ncblphvffbwqnr0000gn/T/tmp.6h9G7NdI/pre_xcodeproj.bazelrc: --xcode_version=15C500b --repo_env=USE_CLANG_CL=15C500b --repo_env=XCODE_VERSION=15C500b --repo_env=DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer
+INFO: Found applicable config definition common:rules_xcodeproj in file /private/var/tmp/_bazel_macbookpro/170550dc58bb510d8baa7b59657c81c9/execroot/_main/bazel-out/darwin_x86_64-fastbuild/bin/Telegram/Telegram_xcodeproj.bazelrc: --verbose_failures --cache_computed_file_digests=500000 --compilation_mode=dbg --experimental_convenience_symlinks=ignore --experimental_use_cpp_compile_action_args_params_file --define=apple.experimental.tree_artifact_outputs=1 --features=apple.swizzle_absolute_xcttestsourcelocation --features=oso_prefix_is_pwd --features=relative_ast_path --features=swift.cacheable_swiftmodules --features=swift.index_while_building --features=swift.use_global_index_store --nolegacy_important_outputs --show_result=0 --noworker_sandboxing --spawn_strategy=remote,worker,local
+INFO: Found applicable config definition build:rules_xcodeproj in file /private/var/tmp/_bazel_macbookpro/170550dc58bb510d8baa7b59657c81c9/execroot/_main/bazel-out/darwin_x86_64-fastbuild/bin/Telegram/Telegram_xcodeproj.bazelrc: --remote_download_outputs=toplevel
+Computing main repo mapping: 
+Loading: 
+Loading: 1 packages loaded
+Analyzing: target @@rules_xcodeproj++rules_repos+rules_xcodeproj_generated//generator/Telegram/Telegram_xcodeproj:Telegram_xcodeproj (2 packages loaded, 0 targets configured)
+Analyzing: target @@rules_xcodeproj++rules_repos+rules_xcodeproj_generated//generator/Telegram/Telegram_xcodeproj:Telegram_xcodeproj (2 packages loaded, 0 targets configured)
+
+Analyzing: target @@rules_xcodeproj++rules_repos+rules_xcodeproj_generated//generator/Telegram/Telegram_xcodeproj:Telegram_xcodeproj (5 packages loaded, 3810 targets configured)
+
+Analyzing: target @@rules_xcodeproj++rules_repos+rules_xcodeproj_generated//generator/Telegram/Telegram_xcodeproj:Telegram_xcodeproj (6 packages loaded, 4184 targets configured)
+
+ERROR: /Users/macbookpro/Desktop/форк/Telegram-iOS/third-party/webrtc/BUILD:3055:13: configurable attribute "copts" in //third-party/webrtc:webrtc_objc doesn't match this configuration. Would a default condition help?
+
+Conditions checked:
+ @@rules_apple+//apple:ios_arm64
+ //build-system:ios_sim_arm64
+
+To see a condition's definition, run: bazel query --output=build <condition label>.
+
+This instance of //third-party/webrtc:webrtc_objc has configuration identifier a055f73. To inspect its configuration, run: bazel config a055f73.
+
+For more help, see https://bazel.build/docs/configurable-attributes#faq-select-choose-condition.
+
+ERROR: Analysis of target '@@rules_xcodeproj++rules_repos+rules_xcodeproj_generated//generator/Telegram/Telegram_xcodeproj:Telegram_xcodeproj' failed; build aborted: Analysis failed
+INFO: Elapsed time: 3.786s, Critical Path: 0.01s
+INFO: 1 process: 1 internal.
+ERROR: Build did NOT complete successfully
+FAILED: 
+ERROR: Build failed. Not running target
+Overriding the required Xcode version 26.4 with 15.2 as reported by 'xcode-select -p'
+Traceback (most recent call last):
+  File "/Users/macbookpro/Desktop/форк/Telegram-iOS/build-system/Make/Make.py", line 1238, in <module>
+    generate_project(bazel=bazel_path, arguments=args)
+  File "/Users/macbookpro/Desktop/форк/Telegram-iOS/build-system/Make/Make.py", line 561, in generate_project
+    xcodeproj_path = generate(
+  File "/Users/macbookpro/Desktop/форк/Telegram-iOS/build-system/Make/ProjectGeneration.py", line 57, in generate
+    return generate_xcodeproj(build_environment, disable_extensions, disable_provisioning_profiles, include_release, generate_dsym, bazel_app_arguments, target_name)
+  File "/Users/macbookpro/Desktop/форк/Telegram-iOS/build-system/Make/ProjectGeneration.py", line 50, in generate_xcodeproj
+    call_executable(bazel_generate_arguments)
+  File "/Users/macbookpro/Desktop/форк/Telegram-iOS/build-system/Make/BuildEnvironment.py", line 104, in call_executable
+    subprocess.check_call(resolved_arguments, env=resolved_env)
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 373, in check_call
+    raise CalledProcessError(retcode, cmd)
+subprocess.CalledProcessError: Command '['/Users/macbookpro/Desktop/форк/Telegram-iOS/build-input/bazel-8.4.2-darwin-x86_64', 'run', '//Telegram:Telegram_xcodeproj', '--//Telegram:disableExtensions', '--//Telegram:disableStripping']' returned non-zero exit status 1.

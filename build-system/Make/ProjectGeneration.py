@@ -22,7 +22,8 @@ def generate_xcodeproj(build_environment: BuildEnvironment, disable_extensions, 
     bazel_generate_arguments = [build_environment.bazel_path]
 
     bazel_generate_arguments += ['run', '//{}_xcodeproj'.format(app_target_spec)]
-
+    bazel_generate_arguments += ['--cpu=ios_arm64', '--ios_multi_cpus=arm64']
+    
     if target_name == 'Telegram':
         if disable_extensions:
             bazel_generate_arguments += ['--//{}:disableExtensions'.format(app_target)]
@@ -39,6 +40,8 @@ def generate_xcodeproj(build_environment: BuildEnvironment, disable_extensions, 
 
     project_bazel_arguments += ['--features=-swift.debug_prefix_map']
     project_bazel_arguments += ['--features=swift.emit_swiftsourceinfo']
+    project_bazel_arguments += ['--cpu=ios_arm64']
+    project_bazel_arguments += ['--ios_multi_cpus=arm64']
     
     xcodeproj_bazelrc = os.path.join(build_environment.base_path, 'xcodeproj.bazelrc')
     if os.path.isfile(xcodeproj_bazelrc):

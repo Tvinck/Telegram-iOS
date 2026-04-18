@@ -1,0 +1,11 @@
+Command line invocation:
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild -project /Users/macbookpro/Desktop/форк/Telegram-iOS/Telegram/Telegram.xcodeproj -scheme Telegram -destination generic/platform=iOS -allowProvisioningUpdates CODE_SIGN_STYLE=Automatic DEVELOPMENT_TEAM=M7B726YM8N archive -archivePath build_output.xcarchive
+
+User defaults from command line:
+    IDEArchivePathOverride = /Users/macbookpro/Desktop/форк/Telegram-iOS/build_output.xcarchive
+    IDEPackageSupportUseBuiltinSCM = YES
+
+Build settings from command line:
+    CODE_SIGN_STYLE = Automatic
+    DEVELOPMENT_TEAM = M7B726YM8N
+

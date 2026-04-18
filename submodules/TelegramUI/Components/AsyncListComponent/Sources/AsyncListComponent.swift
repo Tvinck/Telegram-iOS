@@ -7,11 +7,11 @@ import SwiftSignalKit
 import MergeLists
 import ComponentDisplayAdapters
 
+public protocol AsyncListComponentItemView: UIView {
+    func isReorderable(at point: CGPoint) -> Bool
+}
+
 public final class AsyncListComponent: Component {
-    public protocol ItemView: UIView {
-        func isReorderable(at point: CGPoint) -> Bool
-    }
-    
     public final class OverlayContainerView: UIView {
         public override init(frame: CGRect) {
             super.init(frame: frame)
@@ -374,7 +374,7 @@ public final class AsyncListComponent: Component {
         }
         
         override func isReorderable(at point: CGPoint) -> Bool {
-            if let itemView = self.contentsView.view as? ItemView {
+            if let itemView = self.contentsView.view as? AsyncListComponentItemView {
                 return itemView.isReorderable(at: self.view.convert(point, to: itemView))
             }
             return false

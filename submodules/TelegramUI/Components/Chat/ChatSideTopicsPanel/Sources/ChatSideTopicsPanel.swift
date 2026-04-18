@@ -191,7 +191,7 @@ public final class ChatSideTopicsPanel: Component {
             return true
         }
         
-        final class View: UIView, AsyncListComponent.ItemView {
+        final class View: UIView, AsyncListComponentItemView {
             private let extractedContainerNode: ContextExtractedContentContainingNode
             private let containerNode: ContextControllerSourceNode
             
@@ -636,7 +636,7 @@ public final class ChatSideTopicsPanel: Component {
             return true
         }
         
-        final class View: UIView, AsyncListComponent.ItemView {
+        final class View: UIView, AsyncListComponentItemView {
             private let extractedContainerNode: ContextExtractedContentContainingNode
             private let containerNode: ContextControllerSourceNode
             

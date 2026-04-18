@@ -83,7 +83,7 @@ struct XcodeParse: ParsableCommand {
         for buildConfiguration in xcodeproj.pbxproj.buildConfigurations {
             if buildConfiguration.name == "Debug" {
                 for name in requiredBuildSettings {
-                    if let value = buildConfiguration.buildSettings[name]?.stringValue {
+                    if let value = buildConfiguration.buildSettings[name] as? String {
                         rawVariables[name] = value
                     }
                 }
@@ -201,7 +201,7 @@ struct XcodeParse: ParsableCommand {
             if let buildConfigurationList = target.buildConfigurationList {
                 for buildConfiguration in buildConfigurationList.buildConfigurations {
                     if buildConfiguration.name == "Debug" {
-                        if let swiftFlagsString = buildConfiguration.buildSettings["OTHER_SWIFT_FLAGS[sdk=iphonesimulator*]"]?.stringValue {
+                        if let swiftFlagsString = buildConfiguration.buildSettings["OTHER_SWIFT_FLAGS[sdk=iphonesimulator*]"] as? String {
                             do {
                                 swiftFlags = try shlexSplit(swiftFlagsString)
                             } catch let error {
@@ -236,7 +236,7 @@ struct XcodeParse: ParsableCommand {
                                         var variableValue: String? = variables[variableName]
                                         
                                         // If not found in variables, check build settings
-                                        if variableValue == nil, let value = buildConfiguration.buildSettings[variableName]?.stringValue {
+                                        if variableValue == nil, let value = buildConfiguration.buildSettings[variableName] as? String {
                                             variableValue = value
                                         }
                                         
