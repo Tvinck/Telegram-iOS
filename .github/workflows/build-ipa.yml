@@ -23,13 +23,42 @@ jobs:
         run: |
           xcodebuild -downloadPlatform iOS
           xcodebuild -downloadComponent MetalToolchain
-          echo "iOS Platform and Metal Toolchain installed"
+
+      - name: Install codesigning certificates
+        run: |
+          # Create a temporary keychain
+          KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
+          KEYCHAIN_PASSWORD="temporary"
+          
+          security create-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+          security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
+          security unlock-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+          
+          # Import the certificate (no password for fake-codesigning)
+          security import build-system/fake-codesigning/certs/SelfSigned.p12 \
+            -P "" -A -t cert -f pkcs12 \
+            -k $KEYCHAIN_PATH
+          
+          # Add keychain to search list
+          security list-keychain -d user -s $KEYCHAIN_PATH login.keychain-db
+          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+          
+          # Install provisioning profiles
+          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+          for profile in build-system/fake-codesigning/profiles/*.mobileprovision; do
+            UUID=$(/usr/libexec/PlistBuddy -c "Print UUID" /dev/stdin <<< $(security cms -D -i "$profile"))
+            cp "$profile" ~/Library/MobileDevice/Provisioning\ Profiles/"$UUID".mobileprovision
+          done
+          
+          echo "Certificates and profiles installed"
 
       - name: Show environment
         run: |
           xcodebuild -version
           xcode-select -p
           xcodebuild -showsdks | grep iOS
+          security find-identity -v -p codesigning
+          ls ~/Library/MobileDevice/Provisioning\ Profiles/
           python3 --version
           df -h /
 
@@ -51,10 +80,10 @@ jobs:
           path: ./build-output/Telegram.ipa
           if-no-files-found: warn
 
-      - name: Upload DSYMs
+      - name: Upload all build output
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: TeleX-DSYMs
-          path: ./build-output/Telegram.DSYMs.zip
+          name: TeleX-build-output
+          path: ./build-output/
           if-no-files-found: ignore
