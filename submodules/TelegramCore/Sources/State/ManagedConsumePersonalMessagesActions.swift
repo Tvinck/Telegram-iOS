@@ -253,65 +253,46 @@ func managedReadReactionOrPollVoteActions(postbox: Postbox, network: Network, st
 
 private func synchronizeConsumeMessageContents(transaction: Transaction, postbox: Postbox, network: Network, stateManager: AccountStateManager, id: MessageId) -> Signal<Void, NoError> {
     if id.peerId.namespace == Namespaces.Peer.CloudUser || id.peerId.namespace == Namespaces.Peer.CloudGroup {
-        return network.request(Api.functions.messages.readMessageContents(id: [id.id]))
-            |> map(Optional.init)
-            |> `catch` { _ -> Signal<Api.messages.AffectedMessages?, NoError> in
-                return .single(nil)
-            }
-            |> mapToSignal { result -> Signal<Void, NoError> in
-                if let result = result {
-                    switch result {
-                        case let .affectedMessages(affectedMessagesData):
-                            let (pts, ptsCount) = (affectedMessagesData.pts, affectedMessagesData.ptsCount)
-                            stateManager.addUpdateGroups([.updatePts(pts: pts, ptsCount: ptsCount)])
+        return postbox.transaction { transaction -> Void in
+            transaction.setPendingMessageAction(type: .consumeUnseenPersonalMessage, id: id, action: nil)
+            transaction.updateMessage(id, update: { currentMessage in
+                var storeForwardInfo: StoreMessageForwardInfo?
+                if let forwardInfo = currentMessage.forwardInfo {
+                    storeForwardInfo = StoreMessageForwardInfo(authorId: forwardInfo.author?.id, sourceId: forwardInfo.source?.id, sourceMessageId: forwardInfo.sourceMessageId, date: forwardInfo.date, authorSignature: forwardInfo.authorSignature, psaType: forwardInfo.psaType, flags: forwardInfo.flags)
+                }
+                var attributes = currentMessage.attributes
+                loop: for j in 0 ..< attributes.count {
+                    if let attribute = attributes[j] as? ConsumablePersonalMentionMessageAttribute, !attribute.consumed {
+                        attributes[j] = ConsumablePersonalMentionMessageAttribute(consumed: true, pending: false)
+                        break loop
                     }
                 }
-                return postbox.transaction { transaction -> Void in
-                    transaction.setPendingMessageAction(type: .consumeUnseenPersonalMessage, id: id, action: nil)
-                    transaction.updateMessage(id, update: { currentMessage in
-                        var storeForwardInfo: StoreMessageForwardInfo?
-                        if let forwardInfo = currentMessage.forwardInfo {
-                            storeForwardInfo = StoreMessageForwardInfo(authorId: forwardInfo.author?.id, sourceId: forwardInfo.source?.id, sourceMessageId: forwardInfo.sourceMessageId, date: forwardInfo.date, authorSignature: forwardInfo.authorSignature, psaType: forwardInfo.psaType, flags: forwardInfo.flags)
-                        }
-                        var attributes = currentMessage.attributes
-                        loop: for j in 0 ..< attributes.count {
-                            if let attribute = attributes[j] as? ConsumablePersonalMentionMessageAttribute, !attribute.consumed {
-                                attributes[j] = ConsumablePersonalMentionMessageAttribute(consumed: true, pending: false)
-                                break loop
-                            }
-                        }
-                        var updatedTags = currentMessage.tags
-                        updatedTags.remove(.unseenPersonalMessage)
-                        return .update(StoreMessage(id: currentMessage.id, customStableId: nil, globallyUniqueId: currentMessage.globallyUniqueId, groupingKey: currentMessage.groupingKey, threadId: currentMessage.threadId, timestamp: currentMessage.timestamp, flags: StoreMessageFlags(currentMessage.flags), tags: updatedTags, globalTags: currentMessage.globalTags, localTags: currentMessage.localTags, forwardInfo: storeForwardInfo, authorId: currentMessage.author?.id, text: currentMessage.text, attributes: attributes, media: currentMessage.media))
-                    })
-                }
-            }
+                var updatedTags = currentMessage.tags
+                updatedTags.remove(.unseenPersonalMessage)
+                return .update(StoreMessage(id: currentMessage.id, customStableId: nil, globallyUniqueId: currentMessage.globallyUniqueId, groupingKey: currentMessage.groupingKey, threadId: currentMessage.threadId, timestamp: currentMessage.timestamp, flags: StoreMessageFlags(currentMessage.flags), tags: updatedTags, globalTags: currentMessage.globalTags, localTags: currentMessage.localTags, forwardInfo: storeForwardInfo, authorId: currentMessage.author?.id, text: currentMessage.text, attributes: attributes, media: currentMessage.media))
+            })
+        }
     } else if id.peerId.namespace == Namespaces.Peer.CloudChannel {
-        if let peer = transaction.getPeer(id.peerId), let inputChannel = apiInputChannel(peer) {
-            return network.request(Api.functions.channels.readMessageContents(channel: inputChannel, id: [id.id]))
-                |> `catch` { _ -> Signal<Api.Bool, NoError> in
-                    return .single(.boolFalse)
-                } |> mapToSignal { result -> Signal<Void, NoError> in
-                    return postbox.transaction { transaction -> Void in
-                        transaction.setPendingMessageAction(type: .consumeUnseenPersonalMessage, id: id, action: nil)
-                        transaction.updateMessage(id, update: { currentMessage in
-                            var storeForwardInfo: StoreMessageForwardInfo?
-                            if let forwardInfo = currentMessage.forwardInfo {
-                                storeForwardInfo = StoreMessageForwardInfo(authorId: forwardInfo.author?.id, sourceId: forwardInfo.source?.id, sourceMessageId: forwardInfo.sourceMessageId, date: forwardInfo.date, authorSignature: forwardInfo.authorSignature, psaType: forwardInfo.psaType, flags: forwardInfo.flags)
-                            }
-                            var attributes = currentMessage.attributes
-                            loop: for j in 0 ..< attributes.count {
-                                if let attribute = attributes[j] as? ConsumablePersonalMentionMessageAttribute, !attribute.consumed {
-                                    attributes[j] = ConsumablePersonalMentionMessageAttribute(consumed: true, pending: false)
-                                    break loop
-                                }
-                            }
-                            var updatedTags = currentMessage.tags
-                            updatedTags.remove(.unseenPersonalMessage)
-                            return .update(StoreMessage(id: currentMessage.id, customStableId: nil, globallyUniqueId: currentMessage.globallyUniqueId, groupingKey: currentMessage.groupingKey, threadId: currentMessage.threadId, timestamp: currentMessage.timestamp, flags: StoreMessageFlags(currentMessage.flags), tags: updatedTags, globalTags: currentMessage.globalTags, localTags: currentMessage.localTags, forwardInfo: storeForwardInfo, authorId: currentMessage.author?.id, text: currentMessage.text, attributes: attributes, media: currentMessage.media))
-                        })
+        if let peer = transaction.getPeer(id.peerId), let _ = apiInputChannel(peer) {
+            return postbox.transaction { transaction -> Void in
+                transaction.setPendingMessageAction(type: .consumeUnseenPersonalMessage, id: id, action: nil)
+                transaction.updateMessage(id, update: { currentMessage in
+                    var storeForwardInfo: StoreMessageForwardInfo?
+                    if let forwardInfo = currentMessage.forwardInfo {
+                        storeForwardInfo = StoreMessageForwardInfo(authorId: forwardInfo.author?.id, sourceId: forwardInfo.source?.id, sourceMessageId: forwardInfo.sourceMessageId, date: forwardInfo.date, authorSignature: forwardInfo.authorSignature, psaType: forwardInfo.psaType, flags: forwardInfo.flags)
                     }
-                }
+                    var attributes = currentMessage.attributes
+                    loop: for j in 0 ..< attributes.count {
+                        if let attribute = attributes[j] as? ConsumablePersonalMentionMessageAttribute, !attribute.consumed {
+                            attributes[j] = ConsumablePersonalMentionMessageAttribute(consumed: true, pending: false)
+                            break loop
+                        }
+                    }
+                    var updatedTags = currentMessage.tags
+                    updatedTags.remove(.unseenPersonalMessage)
+                    return .update(StoreMessage(id: currentMessage.id, customStableId: nil, globallyUniqueId: currentMessage.globallyUniqueId, groupingKey: currentMessage.groupingKey, threadId: currentMessage.threadId, timestamp: currentMessage.timestamp, flags: StoreMessageFlags(currentMessage.flags), tags: updatedTags, globalTags: currentMessage.globalTags, localTags: currentMessage.localTags, forwardInfo: storeForwardInfo, authorId: currentMessage.author?.id, text: currentMessage.text, attributes: attributes, media: currentMessage.media))
+                })
+            }
         } else {
             return .complete()
         }
@@ -322,19 +303,35 @@ private func synchronizeConsumeMessageContents(transaction: Transaction, postbox
 
 private func synchronizeReadMessageReactionsOrPollVotes(transaction: Transaction, postbox: Postbox, network: Network, stateManager: AccountStateManager, id: MessageId) -> Signal<Void, NoError> {
     if id.peerId.namespace == Namespaces.Peer.CloudUser || id.peerId.namespace == Namespaces.Peer.CloudGroup {
-        return network.request(Api.functions.messages.readMessageContents(id: [id.id]))
-        |> map(Optional.init)
-        |> `catch` { _ -> Signal<Api.messages.AffectedMessages?, NoError> in
-            return .single(nil)
-        }
-        |> mapToSignal { result -> Signal<Void, NoError> in
-            if let result = result {
-                switch result {
-                    case let .affectedMessages(affectedMessagesData):
-                        let (pts, ptsCount) = (affectedMessagesData.pts, affectedMessagesData.ptsCount)
-                        stateManager.addUpdateGroups([.updatePts(pts: pts, ptsCount: ptsCount)])
+        return postbox.transaction { transaction -> Void in
+            transaction.setPendingMessageAction(type: .readReactionOrPollVote, id: id, action: nil)
+            transaction.updateMessage(id, update: { currentMessage in
+                var storeForwardInfo: StoreMessageForwardInfo?
+                if let forwardInfo = currentMessage.forwardInfo {
+                    storeForwardInfo = StoreMessageForwardInfo(authorId: forwardInfo.author?.id, sourceId: forwardInfo.source?.id, sourceMessageId: forwardInfo.sourceMessageId, date: forwardInfo.date, authorSignature: forwardInfo.authorSignature, psaType: forwardInfo.psaType, flags: forwardInfo.flags)
                 }
-            }
+                var attributes = currentMessage.attributes
+                loop: for j in 0 ..< attributes.count {
+                    if let attribute = attributes[j] as? ReactionsMessageAttribute, attribute.hasUnseen {
+                        attributes[j] = attribute.withAllSeen()
+                        break loop
+                    }
+                }
+                var media = currentMessage.media
+                loop: for j in 0 ..< media.count {
+                    if let poll = media[j] as? TelegramMediaPoll {
+                        media[j] = poll.withoutUnreadResults()
+                    }
+                }
+                
+                var updatedTags = currentMessage.tags
+                updatedTags.remove(.unseenReaction)
+                updatedTags.remove(.unseenPollVote)
+                return .update(StoreMessage(id: currentMessage.id, customStableId: nil, globallyUniqueId: currentMessage.globallyUniqueId, groupingKey: currentMessage.groupingKey, threadId: currentMessage.threadId, timestamp: currentMessage.timestamp, flags: StoreMessageFlags(currentMessage.flags), tags: updatedTags, globalTags: currentMessage.globalTags, localTags: currentMessage.localTags, forwardInfo: storeForwardInfo, authorId: currentMessage.author?.id, text: currentMessage.text, attributes: attributes, media: media))
+            })
+        }
+    } else if id.peerId.namespace == Namespaces.Peer.CloudChannel {
+        if let peer = transaction.getPeer(id.peerId), let _ = apiInputChannel(peer) {
             return postbox.transaction { transaction -> Void in
                 transaction.setPendingMessageAction(type: .readReactionOrPollVote, id: id, action: nil)
                 transaction.updateMessage(id, update: { currentMessage in
@@ -355,47 +352,11 @@ private func synchronizeReadMessageReactionsOrPollVotes(transaction: Transaction
                             media[j] = poll.withoutUnreadResults()
                         }
                     }
-                    
                     var updatedTags = currentMessage.tags
                     updatedTags.remove(.unseenReaction)
                     updatedTags.remove(.unseenPollVote)
                     return .update(StoreMessage(id: currentMessage.id, customStableId: nil, globallyUniqueId: currentMessage.globallyUniqueId, groupingKey: currentMessage.groupingKey, threadId: currentMessage.threadId, timestamp: currentMessage.timestamp, flags: StoreMessageFlags(currentMessage.flags), tags: updatedTags, globalTags: currentMessage.globalTags, localTags: currentMessage.localTags, forwardInfo: storeForwardInfo, authorId: currentMessage.author?.id, text: currentMessage.text, attributes: attributes, media: media))
                 })
-            }
-        }
-    } else if id.peerId.namespace == Namespaces.Peer.CloudChannel {
-        if let peer = transaction.getPeer(id.peerId), let inputChannel = apiInputChannel(peer) {
-            return network.request(Api.functions.channels.readMessageContents(channel: inputChannel, id: [id.id]))
-            |> `catch` { _ -> Signal<Api.Bool, NoError> in
-                return .single(.boolFalse)
-            }
-            |> mapToSignal { result -> Signal<Void, NoError> in
-                return postbox.transaction { transaction -> Void in
-                    transaction.setPendingMessageAction(type: .readReactionOrPollVote, id: id, action: nil)
-                    transaction.updateMessage(id, update: { currentMessage in
-                        var storeForwardInfo: StoreMessageForwardInfo?
-                        if let forwardInfo = currentMessage.forwardInfo {
-                            storeForwardInfo = StoreMessageForwardInfo(authorId: forwardInfo.author?.id, sourceId: forwardInfo.source?.id, sourceMessageId: forwardInfo.sourceMessageId, date: forwardInfo.date, authorSignature: forwardInfo.authorSignature, psaType: forwardInfo.psaType, flags: forwardInfo.flags)
-                        }
-                        var attributes = currentMessage.attributes
-                        loop: for j in 0 ..< attributes.count {
-                            if let attribute = attributes[j] as? ReactionsMessageAttribute, attribute.hasUnseen {
-                                attributes[j] = attribute.withAllSeen()
-                                break loop
-                            }
-                        }
-                        var media = currentMessage.media
-                        loop: for j in 0 ..< media.count {
-                            if let poll = media[j] as? TelegramMediaPoll {
-                                media[j] = poll.withoutUnreadResults()
-                            }
-                        }
-                        var updatedTags = currentMessage.tags
-                        updatedTags.remove(.unseenReaction)
-                        updatedTags.remove(.unseenPollVote)
-                        return .update(StoreMessage(id: currentMessage.id, customStableId: nil, globallyUniqueId: currentMessage.globallyUniqueId, groupingKey: currentMessage.groupingKey, threadId: currentMessage.threadId, timestamp: currentMessage.timestamp, flags: StoreMessageFlags(currentMessage.flags), tags: updatedTags, globalTags: currentMessage.globalTags, localTags: currentMessage.localTags, forwardInfo: storeForwardInfo, authorId: currentMessage.author?.id, text: currentMessage.text, attributes: attributes, media: media))
-                    })
-                }
             }
         } else {
             return .complete()

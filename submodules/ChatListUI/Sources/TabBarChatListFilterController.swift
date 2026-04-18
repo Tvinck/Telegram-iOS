@@ -12,7 +12,28 @@ import TelegramCore
 public func chatListFilterItems(context: AccountContext) -> Signal<(Int, [(ChatListFilter, Int, Bool)]), NoError> {
     return context.engine.peers.updatedChatListFilters()
     |> distinctUntilChanged
-    |> mapToSignal { filters -> Signal<(Int, [(ChatListFilter, Int, Bool)]), NoError> in
+    |> mapToSignal { baseFilters -> Signal<(Int, [(ChatListFilter, Int, Bool)]), NoError> in
+        var filters = baseFilters
+        let unreadFilterData = ChatListFilterData(
+            isShared: false,
+            hasSharedLinks: false,
+            categories: .all,
+            excludeMuted: false,
+            excludeRead: true,
+            excludeArchived: true,
+            includePeers: ChatListFilterIncludePeers(),
+            excludePeers: [],
+            color: nil
+        )
+        let unreadFilter = ChatListFilter.filter(
+            id: 9999,
+            title: ChatFolderTitle(text: "Unread", entities: [], enableAnimations: true),
+            emoticon: nil,
+            data: unreadFilterData
+        )
+        if !filters.contains(where: { $0.id == unreadFilter.id }) {
+            filters.insert(unreadFilter, at: 0)
+        }
         var unreadCountItems: [UnreadMessageCountsItem] = []
         unreadCountItems.append(.totalInGroup(.root))
         var additionalPeerIds = Set<PeerId>()

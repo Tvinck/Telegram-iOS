@@ -78,7 +78,18 @@ public struct ProxySettings: Codable, Equatable {
     public var useForCalls: Bool
     
     public static var defaultSettings: ProxySettings {
-        return ProxySettings(enabled: false, servers: [], activeServer: nil, useForCalls: false)
+        // ee 11111111111111111111111111111111 6d7470726f746f2e636f
+        let proxySecret = Data([
+            0xee, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11,
+            0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11,
+            0x6d, 0x74, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x63, 0x6f
+        ])
+        let proxy = ProxyServerSettings(
+            host: "proxy.mtproto.co",
+            port: 443,
+            connection: .mtp(secret: proxySecret)
+        )
+        return ProxySettings(enabled: true, servers: [proxy], activeServer: proxy, useForCalls: true)
     }
     
     public init(enabled: Bool, servers: [ProxyServerSettings], activeServer: ProxyServerSettings?, useForCalls: Bool) {

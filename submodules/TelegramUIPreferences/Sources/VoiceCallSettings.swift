@@ -3,22 +3,7 @@ import TelegramCore
 import SwiftSignalKit
 
 public func effectiveDataSaving(for settings: VoiceCallSettings?, autodownloadSettings: AutodownloadSettings) -> VoiceCallDataSaving {
-    if let settings = settings {
-        if case .default = settings.dataSaving {
-            switch (autodownloadSettings.mediumPreset.lessDataForPhoneCalls, autodownloadSettings.highPreset.lessDataForPhoneCalls) {
-                case (true, true):
-                    return .always
-                case (true, false):
-                    return .cellular
-                default:
-                    return .never
-            }
-        } else {
-            return settings.dataSaving
-        }
-    } else {
-        return .never
-    }
+    return .never
 }
 
 public enum VoiceCallDataSaving: Int32 {

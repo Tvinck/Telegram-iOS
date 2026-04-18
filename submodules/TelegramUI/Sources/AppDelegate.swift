@@ -778,6 +778,11 @@ private func extractAccountManagerState(records: AccountRecordsView<TelegramAcco
         
         self.window?.makeKeyAndVisible()
         
+        if !UserDefaults.standard.bool(forKey: "TeleXUnlocked") {
+            let lockScreen = TeleXLockScreen()
+            self.window?.rootViewController?.present(lockScreen, animated: false, completion: nil)
+        }
+        
         var hasActiveCalls: Signal<Bool, NoError> = .single(false)
         if CallKitIntegration.isAvailable, let callKitIntegration = CallKitIntegration.shared {
             hasActiveCalls = callKitIntegration.hasActiveCalls

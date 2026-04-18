@@ -81,11 +81,11 @@ public final class CallBlobsLayer: MetalEngineSubjectLayer, MetalEngineSubject {
             guard let self else {
                 return
             }
-            self.displayLinkSubscription = SharedDisplayLinkDriver.shared.add(framesPerSecond: .fps(30), { [weak self] deltaTime in
+            self.displayLinkSubscription = SharedDisplayLinkDriver.shared.add(framesPerSecond: .fps(60), { [weak self] deltaTime in
                 guard let self else {
                     return
                 }
-                self.phase += 3.0 * Float(deltaTime)
+                self.phase += 1.5 * Float(deltaTime)
                 if self.phase >= 1.0 {
                     for i in 0 ..< self.blobs.count {
                         self.blobs[i].advance()
