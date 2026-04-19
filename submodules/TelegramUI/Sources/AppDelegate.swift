@@ -528,7 +528,15 @@ private func extractAccountManagerState(records: AccountRecordsView<TelegramAcco
         
         let baseAppBundleId = Bundle.main.bundleIdentifier!
         let appGroupName = "group.\(baseAppBundleId)"
-        let maybeAppGroupUrl = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroupName)
+        var maybeAppGroupUrl = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroupName)
+        
+        // TeleX: fallback to Documents directory when App Group is unavailable (sideloading)
+        if maybeAppGroupUrl == nil {
+            let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first!
+            let telexDataPath = documentsPath + "/TeleXData"
+            try? FileManager.default.createDirectory(atPath: telexDataPath, withIntermediateDirectories: true, attributes: nil)
+            maybeAppGroupUrl = URL(fileURLWithPath: telexDataPath)
+        }
         
         let buildConfig = BuildConfig(baseAppBundleId: baseAppBundleId)
         self.buildConfig = buildConfig
