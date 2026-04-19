@@ -76,7 +76,7 @@ public final class TeleXFontManager {
         }
         
         // Let's create UIFontDescriptor and try to find the specific traits
-        var descriptor = UIFontDescriptor(name: familyName, size: size)
+        let descriptor = UIFontDescriptor(name: familyName, size: size)
         
         // Some custom TTFs might not have explicit Bold/Italic traits correctly mapped,
         // but we'll try to apply symbolic traits anyway.
