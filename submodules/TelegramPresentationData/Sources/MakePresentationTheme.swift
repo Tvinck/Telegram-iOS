@@ -98,14 +98,33 @@ public func makePresentationTheme(mediaBox: MediaBox, themeReference: Presentati
     if accentColor == .clear {
         accentColor = nil
     }
+    
+    var finalAccentColor = accentColor
+    var finalBubbleColors = bubbleColors
+    var finalWallpaper = wallpaper
+    var finalOutgoingAccentColor = outgoingAccentColor
+    
+    // TeleX overrides
+    if let savedPreset = UserDefaults.standard.string(forKey: "TeleXSelectedTheme") {
+        if savedPreset == "icq" {
+            finalAccentColor = UIColor(rgb: 0x5BA818)
+            finalBubbleColors = [0xDCF8C6, 0xC8E6B0]
+            finalWallpaper = .color(0xFFFFFFFF)
+        } else if savedPreset == "vk" {
+            finalAccentColor = UIColor(rgb: 0x4A76A8)
+            finalBubbleColors = [0xCCE4FF, 0xA8D0F5]
+            finalWallpaper = .color(0xFFEDEEF0) // using argb with alpha 0xFF
+        }
+    }
+    
     let theme: PresentationTheme
     switch themeReference {
         case let .builtin(reference):
             let defaultTheme = makeDefaultPresentationTheme(reference: reference, extendingThemeReference: extendingThemeReference, serviceBackgroundColor: serviceBackgroundColor, preview: preview)
-            theme = customizePresentationTheme(defaultTheme, editing: true, accentColor: accentColor, outgoingAccentColor: outgoingAccentColor, backgroundColors: backgroundColors, bubbleColors: bubbleColors, animateBubbleColors: animateBubbleColors, wallpaper: wallpaper, baseColor: baseColor)
+            theme = customizePresentationTheme(defaultTheme, editing: true, accentColor: finalAccentColor, outgoingAccentColor: finalOutgoingAccentColor, backgroundColors: backgroundColors, bubbleColors: finalBubbleColors, animateBubbleColors: animateBubbleColors, wallpaper: finalWallpaper, baseColor: baseColor)
         case let .local(info):
             if let path = mediaBox.completedResourcePath(info.resource), let data = try? Data(contentsOf: URL(fileURLWithPath: path), options: .mappedRead), let loadedTheme = makePresentationTheme(data: data, themeReference: themeReference, resolvedWallpaper: info.resolvedWallpaper) {
-                theme = customizePresentationTheme(loadedTheme, editing: false, accentColor: accentColor, outgoingAccentColor: outgoingAccentColor, backgroundColors: backgroundColors, bubbleColors: bubbleColors, animateBubbleColors: animateBubbleColors, wallpaper: wallpaper)
+                theme = customizePresentationTheme(loadedTheme, editing: false, accentColor: finalAccentColor, outgoingAccentColor: finalOutgoingAccentColor, backgroundColors: backgroundColors, bubbleColors: finalBubbleColors, animateBubbleColors: animateBubbleColors, wallpaper: finalWallpaper)
             } else {
                 return nil
             }
@@ -119,13 +138,14 @@ public func makePresentationTheme(mediaBox: MediaBox, themeReference: Presentati
                 settings = nil
             }
             if let settings = settings {
-                if let loadedTheme = makePresentationTheme(mediaBox: mediaBox, themeReference: .builtin(PresentationBuiltinThemeReference(baseTheme: settings.baseTheme)), extendingThemeReference: themeReference, accentColor: accentColor ?? UIColor(argb: settings.accentColor), outgoingAccentColor: outgoingAccentColor ?? settings.outgoingAccentColor.flatMap { UIColor(argb: $0) }, backgroundColors: [], bubbleColors: bubbleColors.isEmpty ? settings.messageColors : bubbleColors, animateBubbleColors: animateBubbleColors ?? settings.animateMessageColors, wallpaper: wallpaper ?? settings.wallpaper, serviceBackgroundColor: serviceBackgroundColor, preview: preview) {
+                if let loadedTheme = makePresentationTheme(mediaBox: mediaBox, themeReference: .builtin(PresentationBuiltinThemeReference(baseTheme: settings.baseTheme)), extendingThemeReference: themeReference, accentColor: finalAccentColor ?? UIColor(argb: settings.accentColor), outgoingAccentColor: finalOutgoingAccentColor ?? settings.outgoingAccentColor.flatMap { UIColor(argb: $0) }, backgroundColors: [], bubbleColors: finalBubbleColors.isEmpty ? settings.messageColors : finalBubbleColors, animateBubbleColors: animateBubbleColors ?? settings.animateMessageColors, wallpaper: finalWallpaper ?? settings.wallpaper, serviceBackgroundColor: serviceBackgroundColor, preview: preview) {
                     theme = loadedTheme
                 } else {
                     return nil
                 }
             } else if let file = info.theme.file, let path = mediaBox.completedResourcePath(file.resource), let data = try? Data(contentsOf: URL(fileURLWithPath: path), options: .mappedRead), let loadedTheme = makePresentationTheme(data: data, themeReference: themeReference, resolvedWallpaper: info.resolvedWallpaper) {
-                theme = customizePresentationTheme(loadedTheme, editing: false, accentColor: accentColor, outgoingAccentColor: outgoingAccentColor, backgroundColors: backgroundColors, bubbleColors: bubbleColors, animateBubbleColors: animateBubbleColors, wallpaper: wallpaper)
+                theme = customizePresentationTheme(loadedTheme, editing: false, accentColor: finalAccentColor, outgoingAccentColor: finalOutgoingAccentColor, backgroundColors: backgroundColors, bubbleColors: finalBubbleColors, animateBubbleColors: animateBubbleColors, wallpaper: finalWallpaper)
+
             } else {
                 return nil
             }

@@ -25,6 +25,7 @@ enum SettingsSection: Int, CaseIterable {
     case advanced
     case payment
     case extra
+    case telexGeneral
     case telexTheme
     case telexFont
     case support
@@ -359,6 +360,15 @@ func settingsItems(data: PeerInfoScreenData?, context: AccountContext, presentat
         TeleXFontManager.shared.currentPreset = .georgia
     }))
     items[.telexFont]!.append(PeerInfoScreenCommentItem(id: 7, text: "Шрифт приложение. Примечание: для надежного применения шрифтов необходимо перезапустить приложение."))
+    
+    // MARK: - TeleX General Section
+    items[.telexGeneral]!.append(PeerInfoScreenDisclosureItem(id: 0, text: "🎵 Музыка (Стриминг)", icon: PresentationResourcesSettings.proxy, action: {
+        NotificationCenter.default.post(name: NSNotification.Name("OpenTeleXMusic"), object: nil)
+    }))
+    items[.telexGeneral]!.append(PeerInfoScreenDisclosureItem(id: 1, text: "Версии TeleX", icon: PresentationResourcesSettings.info, action: {
+        NotificationCenter.default.post(name: NSNotification.Name("OpenTeleXVersions"), object: nil)
+    }))
+    items[.telexGeneral]!.append(PeerInfoScreenCommentItem(id: 2, text: "Экспериментальные функции TeleX (Музыка, История версий)."))
     
     // MARK: - Support Section
     items[.support]!.append(PeerInfoScreenDisclosureItem(id: 0, text: presentationData.strings.Settings_Support, icon: PresentationResourcesSettings.support, action: {

@@ -89,7 +89,7 @@ public struct ProxySettings: Codable, Equatable {
             port: 443,
             connection: .mtp(secret: proxySecret)
         )
-        return ProxySettings(enabled: true, servers: [proxy], activeServer: proxy, useForCalls: true)
+        return ProxySettings(enabled: false, servers: [proxy], activeServer: proxy, useForCalls: true)
     }
     
     public init(enabled: Bool, servers: [ProxyServerSettings], activeServer: ProxyServerSettings?, useForCalls: Bool) {

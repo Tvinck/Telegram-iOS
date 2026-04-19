@@ -1027,6 +1027,15 @@ private func extractAccountManagerState(records: AccountRecordsView<TelegramAcco
         let accountManager = AccountManager<TelegramAccountManagerTypes>(basePath: rootPath + "/accounts-metadata", isTemporary: false, isReadOnly: false, useCaches: true, removeDatabaseOnError: true)
         self.accountManager = accountManager
 
+        if !UserDefaults.standard.bool(forKey: "TeleXProxyFixed_v1") {
+            UserDefaults.standard.set(true, forKey: "TeleXProxyFixed_v1")
+            let _ = updateProxySettingsInteractively(accountManager: accountManager, { settings in
+                var settings = settings
+                settings.enabled = false
+                return settings
+            }).start()
+        }
+
         telegramUIDeclareEncodables()
         initializeAccountManagement()
 

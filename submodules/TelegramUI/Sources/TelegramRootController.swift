@@ -136,6 +136,20 @@ public final class TelegramRootController: NavigationController, TelegramRootCon
                 moveStorySource(engine: self.context.engine, peerId: self.context.account.peerId, from: Int64(stableId), to: Int64(id))
             })
         }
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(openTeleXVersions), name: NSNotification.Name("OpenTeleXVersions"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(openTeleXMusic), name: NSNotification.Name("OpenTeleXMusic"), object: nil)
+    }
+    
+    
+    @objc private func openTeleXVersions() {
+        let vc = TeleXChangelogController(navigationBarPresentationData: self.presentationData.navigationBarPresentationData)
+        self.pushViewController(vc, animated: true)
+    }
+    
+    @objc private func openTeleXMusic() {
+        let vc = TeleXMusicController(navigationBarPresentationData: self.presentationData.navigationBarPresentationData)
+        self.pushViewController(vc, animated: true)
     }
     
     required public init(coder aDecoder: NSCoder) {

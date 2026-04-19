@@ -72,5 +72,4 @@ final class TeleXThemeManager {
                 .withUpdatedThemeSpecificAccentColors(accentColors)
                 .withUpdatedThemeSpecificChatWallpapers(wallpapers)
         }.start()
-    }
 }
