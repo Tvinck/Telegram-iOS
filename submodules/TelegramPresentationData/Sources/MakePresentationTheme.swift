@@ -102,7 +102,7 @@ public func makePresentationTheme(mediaBox: MediaBox, themeReference: Presentati
     var finalAccentColor = accentColor
     var finalBubbleColors = bubbleColors
     var finalWallpaper = wallpaper
-    var finalOutgoingAccentColor = outgoingAccentColor
+    let finalOutgoingAccentColor = outgoingAccentColor
     
     // TeleX overrides
     if let savedPreset = UserDefaults.standard.string(forKey: "TeleXSelectedTheme") {
