@@ -148,7 +148,7 @@ public final class TelegramRootController: NavigationController, TelegramRootCon
     }
     
     @objc private func openTeleXMusic() {
-        let vc = TeleXMusicController(navigationBarPresentationData: self.presentationData.navigationBarPresentationData)
+        let vc = TeleXMusicController(context: self.context)
         self.pushViewController(vc, animated: true)
     }
     
