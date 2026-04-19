@@ -786,11 +786,13 @@ private func extractAccountManagerState(records: AccountRecordsView<TelegramAcco
         
         self.window?.makeKeyAndVisible()
         
-        // TeleX: Lock screen disabled for now — will re-implement with Face ID/Touch ID
-        // if !UserDefaults.standard.bool(forKey: "TeleXUnlocked") {
-        //     let lockScreen = TeleXLockScreen()
-        //     self.window?.rootViewController?.present(lockScreen, animated: false, completion: nil)
-        // }
+        // TeleX: Show ICQ-style welcome screen on first launch only
+        if !UserDefaults.standard.bool(forKey: "TeleXUnlocked") {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                let welcomeScreen = TeleXWelcomeScreen()
+                self.window?.rootViewController?.present(welcomeScreen, animated: true, completion: nil)
+            }
+        }
         
         var hasActiveCalls: Signal<Bool, NoError> = .single(false)
         if CallKitIntegration.isAvailable, let callKitIntegration = CallKitIntegration.shared {

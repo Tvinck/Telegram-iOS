@@ -1,0 +1,151 @@
+INFO: Invocation ID: 9effb318-ab90-4996-9c51-3914e2ed48fd
+INFO: Options provided by the client:
+  Inherited 'common' options: --isatty=0 --terminal_columns=80
+INFO: Reading rc options for 'build' from /Users/macbookpro/Desktop/форк/Telegram-iOS/.bazelrc:
+  Inherited 'common' options: --features=swift.index_while_building --features=swift.use_global_index_store --features=swift.use_global_module_cache --features=oso_prefix_is_pwd
+INFO: Reading rc options for 'build' from /Users/macbookpro/Desktop/форк/Telegram-iOS/.bazelrc:
+  'build' options: --action_env=ZERO_AR_DATE=1 --apple_platform_type=ios --enable_platform_specific_config --apple_crosstool_top=@local_config_apple_cc//:toolchain --crosstool_top=@local_config_apple_cc//:toolchain --host_crosstool_top=@local_config_apple_cc//:toolchain --per_file_copt=.*.m$,@-fno-objc-msgsend-selector-stubs --per_file_copt=.*.mm$,@-fno-objc-msgsend-selector-stubs --features=debug_prefix_map_pwd_is_dot --features=swift.cacheable_swiftmodules --features=swift.debug_prefix_map --features=swift.enable_vfsoverlays --strategy=Genrule=standalone --spawn_strategy=standalone --strategy=SwiftCompile=worker
+Computing main repo mapping: 
+Loading: 
+Loading: 0 packages loaded
+WARNING: Build option --define has changed, discarding analysis cache (this can be expensive, see https://bazel.build/advanced/performance/iteration-speed).
+Analyzing: target //Telegram:Telegram (1 packages loaded)
+Analyzing: target //Telegram:Telegram (1 packages loaded, 0 targets configured)
+Analyzing: target //Telegram:Telegram (1 packages loaded, 0 targets configured)
+
+Analyzing: target //Telegram:Telegram (71 packages loaded, 379 targets configured)
+
+Analyzing: target //Telegram:Telegram (333 packages loaded, 8944 targets configured)
+
+Analyzing: target //Telegram:Telegram (575 packages loaded, 11514 targets configured)
+
+Analyzing: target //Telegram:Telegram (795 packages loaded, 12566 targets configured)
+
+Analyzing: target //Telegram:Telegram (848 packages loaded, 19610 targets configured)
+
+Analyzing: target //Telegram:Telegram (857 packages loaded, 29124 targets configured)
+
+Analyzing: target //Telegram:Telegram (859 packages loaded, 31649 targets configured)
+
+Analyzing: target //Telegram:Telegram (859 packages loaded, 31677 targets configured)
+
+Analyzing: target //Telegram:Telegram (871 packages loaded, 31972 targets configured)
+
+INFO: Analyzed target //Telegram:Telegram (871 packages loaded, 32468 targets configured).
+[1 / 1] no actions running
+[878 / 2,871] checking cached actions
+[1,887 / 3,902] [Scann] Compiling third-party/openh264/third_party/openh264/src/codec/decoder/plus/src/welsDecoderExt.cpp
+[2,584 / 4,157] Compiling third-party/openh264/third_party/openh264/src/codec/decoder/plus/src/welsDecoderExt.cpp; 0s local, disk-cache ... (2 actions, 1 running)
+[2,836 / 4,313] Compiling third-party/openh264/third_party/openh264/src/codec/decoder/plus/src/welsDecoderExt.cpp; 1s local, disk-cache ... (2 actions running)
+[2,907 / 4,370] Compiling third-party/openh264/third_party/openh264/src/codec/decoder/plus/src/welsDecoderExt.cpp; 2s local, disk-cache ... (4 actions running)
+[2,908 / 4,370] Compiling third-party/openh264/third_party/openh264/src/codec/decoder/core/src/au_parser.cpp; 4s local, disk-cache ... (4 actions, 3 running)
+[2,911 / 4,370] Compiling third-party/boringssl/src/ssl/tls_record.cc; 3s local, disk-cache ... (4 actions, 3 running)
+[2,911 / 4,370] Compiling third-party/boringssl/src/ssl/tls_record.cc; 4s local, disk-cache ... (4 actions running)
+[2,912 / 4,370] Compiling third-party/boringssl/src/ssl/tls_record.cc; 5s local, disk-cache ... (4 actions running)
+[2,913 / 4,370] Compiling third-party/boringssl/src/ssl/tls_record.cc; 6s local, disk-cache ... (4 actions running)
+[2,914 / 4,370] Compiling Swift module //submodules/Components/ActivityIndicatorComponent:ActivityIndicatorComponent; 7s worker, disk-cache ... (4 actions, 3 running)
+[2,915 / 4,370] Compiling Swift module //submodules/Components/ActivityIndicatorComponent:ActivityIndicatorComponent; 9s worker, disk-cache ... (4 actions running)
+[2,916 / 4,370] Compiling Swift module //submodules/Components/ActivityIndicatorComponent:ActivityIndicatorComponent; 11s worker, disk-cache ... (4 actions, 3 running)
+[2,917 / 4,370] Compiling Swift module //submodules/Components/ActivityIndicatorComponent:ActivityIndicatorComponent; 12s worker, disk-cache ... (4 actions running)
+[2,919 / 4,370] Compiling Swift module //submodules/Components/ActivityIndicatorComponent:ActivityIndicatorComponent; 13s worker, disk-cache ... (4 actions running)
+[2,921 / 4,370] Compiling third-party/boringssl/src/ssl/tls13_server.cc; 2s local, disk-cache ... (4 actions running)
+[2,923 / 4,370] Compiling third-party/boringssl/src/ssl/tls13_server.cc; 3s local, disk-cache ... (4 actions running)
+[2,925 / 4,370] Compiling third-party/boringssl/src/ssl/tls13_server.cc; 4s local, disk-cache ... (4 actions, 3 running)
+[2,929 / 4,370] Compiling third-party/openh264/third_party/openh264/src/codec/decoder/core/src/manage_dec_ref.cpp; 1s local, disk-cache ... (4 actions, 3 running)
+[2,963 / 4,451] Compiling Swift module //submodules/TelegramUI/Components/ListItemComponentAdaptor:ListItemComponentAdaptor; 1s worker, disk-cache ... (3 actions running)
+[3,129 / 5,653] Compiling third-party/boringssl/src/ssl/tls13_enc.cc; 2s local, disk-cache ... (2 actions, 1 running)
+[3,355 / 5,653] Compiling Swift module //submodules/TelegramUI/Components/GlassBackgroundComponent:GlassBackgroundComponent; 1s worker, disk-cache ... (3 actions, 2 running)
+[3,492 / 5,653] Compiling Swift module //submodules/TelegramUI/Components/GlassBackgroundComponent:GlassBackgroundComponent; 2s worker, disk-cache ... (3 actions running)
+[3,683 / 5,653] Compiling Swift module //submodules/TelegramUI/Components/GlassBackgroundComponent:GlassBackgroundComponent; 4s worker, disk-cache ... (3 actions running)
+[3,822 / 5,653] Compiling Swift module //submodules/TelegramUI/Components/GlassBackgroundComponent:GlassBackgroundComponent; 5s worker, disk-cache ... (3 actions, 2 running)
+ERROR: /Users/macbookpro/Desktop/форк/Telegram-iOS/submodules/TelegramUI/Components/GlassBackgroundComponent/BUILD:3:14: Compiling Swift module //submodules/TelegramUI/Components/GlassBackgroundComponent:GlassBackgroundComponent failed: (Exit 1): worker failed: error executing SwiftCompile command (from target //submodules/TelegramUI/Components/GlassBackgroundComponent:GlassBackgroundComponent) 
+  (cd /private/var/tmp/_bazel_macbookpro/170550dc58bb510d8baa7b59657c81c9/execroot/_main && \
+  exec env - \
+    APPLE_SDK_PLATFORM=iPhoneOS \
+    APPLE_SDK_VERSION_OVERRIDE=17.2 \
+    PATH=/usr/bin:/bin:/usr/sbin:/sbin \
+    XCODE_VERSION_OVERRIDE=15.2.0.15C500b \
+    ZERO_AR_DATE=1 \
+    __RULES_SWIFT_USE_LEGACY_INDEX_IMPORT=1 \
+  bazel-out/darwin_x86_64-opt-exec-ST-d57f47055a04/bin/external/rules_swift+/tools/worker/worker swiftc @bazel-out/ios_arm64-opt-ios-arm64-min13.0-ST-57b073d392e5/bin/submodules/TelegramUI/Components/GlassBackgroundComponent/GlassBackgroundComponent.swiftmodule-0.params)
+# Configuration: bd627be9e06459068263cf7bf9a1ba3f6ee44c52cc5939e2f7d0c2a9d01125e3
+# Execution platform: @@platforms//host:host
+submodules/TelegramUI/Components/GlassBackgroundComponent/Sources/GlassBackgroundComponent.swift:1328:13: error: unexpected ',' separator
+            )
+            ^
+submodules/TelegramUI/Components/GlassBackgroundComponent/Sources/GlassBackgroundComponent.swift:54:21: error: protocol 'ContentView' cannot be nested inside another declaration
+    public protocol ContentView: UIView {
+                    ^
+submodules/TelegramUI/Components/GlassBackgroundComponent/Sources/GlassBackgroundComponent.swift:346:31: error: cannot find 'UIGlassEffect' in scope
+            let glassEffect = UIGlassEffect(style: .regular)
+                              ^~~~~~~~~~~~~
+submodules/TelegramUI/Components/GlassBackgroundComponent/Sources/GlassBackgroundComponent.swift:346:53: error: cannot infer contextual base in reference to member 'regular'
+            let glassEffect = UIGlassEffect(style: .regular)
+                                                   ~^~~~~~~
+submodules/TelegramUI/Components/GlassBackgroundComponent/Sources/GlassBackgroundComponent.swift:590:42: error: cannot find type 'UIGlassEffect' in scope
+                        var glassEffect: UIGlassEffect?
+                                         ^~~~~~~~~~~~~
+submodules/TelegramUI/Components/GlassBackgroundComponent/Sources/GlassBackgroundComponent.swift:593:51: error: cannot find type 'UIGlassEffect' in scope
+                            let glassEffectValue: UIGlassEffect
+                                                  ^~~~~~~~~~~~~
+submodules/TelegramUI/Components/GlassBackgroundComponent/Sources/GlassBackgroundComponent.swift:597:56: error: cannot find 'UIGlassEffect' in scope
+                                    glassEffectValue = UIGlassEffect(style: .regular)
+                                                       ^~~~~~~~~~~~~
+submodules/TelegramUI/Components/GlassBackgroundComponent/Sources/GlassBackgroundComponent.swift:597:78: error: cannot infer contextual base in reference to member 'regular'
+                                    glassEffectValue = UIGlassEffect(style: .regular)
+                                                                            ~^~~~~~~
+submodules/TelegramUI/Components/GlassBackgroundComponent/Sources/GlassBackgroundComponent.swift:600:56: error: cannot find 'UIGlassEffect' in scope
+                                    glassEffectValue = UIGlassEffect(style: .regular)
+                                                       ^~~~~~~~~~~~~
+submodules/TelegramUI/Components/GlassBackgroundComponent/Sources/GlassBackgroundComponent.swift:600:78: error: cannot infer contextual base in reference to member 'regular'
+                                    glassEffectValue = UIGlassEffect(style: .regular)
+                                                                            ~^~~~~~~
+submodules/TelegramUI/Components/GlassBackgroundComponent/Sources/GlassBackgroundComponent.swift:606:56: error: cannot find 'UIGlassEffect' in scope
+                                    glassEffectValue = UIGlassEffect(style: .regular)
+                                                       ^~~~~~~~~~~~~
+submodules/TelegramUI/Components/GlassBackgroundComponent/Sources/GlassBackgroundComponent.swift:606:78: error: cannot infer contextual base in reference to member 'regular'
+                                    glassEffectValue = UIGlassEffect(style: .regular)
+                                                                            ~^~~~~~~
+submodules/TelegramUI/Components/GlassBackgroundComponent/Sources/GlassBackgroundComponent.swift:609:56: error: cannot find 'UIGlassEffect' in scope
+                                    glassEffectValue = UIGlassEffect(style: .clear)
+                                                       ^~~~~~~~~~~~~
+submodules/TelegramUI/Components/GlassBackgroundComponent/Sources/GlassBackgroundComponent.swift:609:78: error: cannot infer contextual base in reference to member 'clear'
+                                    glassEffectValue = UIGlassEffect(style: .clear)
+                                                                            ~^~~~~
+submodules/TelegramUI/Components/GlassBackgroundComponent/Sources/GlassBackgroundComponent.swift:613:52: error: cannot find 'UIGlassEffect' in scope
+                                glassEffectValue = UIGlassEffect(style: .clear)
+                                                   ^~~~~~~~~~~~~
+submodules/TelegramUI/Components/GlassBackgroundComponent/Sources/GlassBackgroundComponent.swift:613:74: error: cannot infer contextual base in reference to member 'clear'
+                                glassEffectValue = UIGlassEffect(style: .clear)
+                                                                        ~^~~~~
+submodules/TelegramUI/Components/GlassBackgroundComponent/Sources/GlassBackgroundComponent.swift:617:66: error: 'nil' requires a contextual type
+                                    glassEffectValue.tintColor = nil
+                                                                 ^
+submodules/TelegramUI/Components/GlassBackgroundComponent/Sources/GlassBackgroundComponent.swift:625:53: error: cannot find type 'UIGlassEffect' in scope
+                            if nativeView.effect is UIGlassEffect {
+                                                    ^~~~~~~~~~~~~
+submodules/TelegramUI/Components/GlassBackgroundComponent/Sources/GlassBackgroundComponent.swift:648:95: error: cannot find type 'UIGlassEffect' in scope
+                                if let glassEffect, let currentEffect = nativeView.effect as? UIGlassEffect, currentEffect.tintColor == glassEffect.tintColor, currentEffect.isInteractive == glassEffect.isInteractive {
+                                                                                              ^~~~~~~~~~~~~
+submodules/TelegramUI/Components/GlassBackgroundComponent/Sources/GlassBackgroundComponent.swift:706:26: error: cannot find 'UIGlassContainerEffect' in scope
+            let effect = UIGlassContainerEffect()
+                         ^~~~~~~~~~~~~~~~~~~~~~
+Target //Telegram:Telegram failed to build
+INFO: Elapsed time: 119.529s, Critical Path: 15.39s
+INFO: 37 processes: 3825 action cache hit, 8 internal, 26 local, 3 worker.
+ERROR: Build did NOT complete successfully
+Overriding the required Xcode version 26.4 with 15.2 as reported by 'xcode-select -p'
+TelegramBuild: running
+/Users/macbookpro/Desktop/форк/Telegram-iOS/build-input/bazel-8.4.2-darwin-x86_64 build Telegram/Telegram --announce_rc --features=swift.use_global_module_cache --verbose_failures --remote_cache_async --define=buildNumber=100001 --disk_cache=/Users/macbookpro/telegram-bazel-cache -c opt --ios_multi_cpus=arm64 --watchos_cpus=arm64_32 --apple_generate_dsym --output_groups=+dsyms --features=swift.opt_uses_wmo --features=swift.opt_uses_osize --features=dead_strip --objc_enable_binary_stripping
+Traceback (most recent call last):
+  File "/Users/macbookpro/Desktop/форк/Telegram-iOS/build-system/Make/Make.py", line 1240, in <module>
+    build(bazel=bazel_path, arguments=args)
+  File "/Users/macbookpro/Desktop/форк/Telegram-iOS/build-system/Make/Make.py", line 621, in build
+    bazel_command_line.invoke_build()
+  File "/Users/macbookpro/Desktop/форк/Telegram-iOS/build-system/Make/Make.py", line 300, in invoke_build
+    call_executable(combined_arguments)
+  File "/Users/macbookpro/Desktop/форк/Telegram-iOS/build-system/Make/BuildEnvironment.py", line 104, in call_executable
+    subprocess.check_call(resolved_arguments, env=resolved_env)
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 373, in check_call
+    raise CalledProcessError(retcode, cmd)
+subprocess.CalledProcessError: Command '['/Users/macbookpro/Desktop/форк/Telegram-iOS/build-input/bazel-8.4.2-darwin-x86_64', 'build', 'Telegram/Telegram', '--announce_rc', '--features=swift.use_global_module_cache', '--verbose_failures', '--remote_cache_async', '--define=buildNumber=100001', '--disk_cache=/Users/macbookpro/telegram-bazel-cache', '-c', 'opt', '--ios_multi_cpus=arm64', '--watchos_cpus=arm64_32', '--apple_generate_dsym', '--output_groups=+dsyms', '--features=swift.opt_uses_wmo', '--features=swift.opt_uses_osize', '--features=dead_strip', '--objc_enable_binary_stripping']' returned non-zero exit status 1.
