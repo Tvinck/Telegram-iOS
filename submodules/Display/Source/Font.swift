@@ -159,11 +159,22 @@ public struct Font {
     private static let cache = Cache()
     
     public static func with(size: CGFloat, design: Design = .regular, weight: Weight = .regular, width: Width = .standard, traits: Traits = []) -> UIFont {
-        let key = "\(size)_\(design.key)_\(weight.key)_\(width.key)_\(traits.rawValue)"
+        let presetKey = TeleXFontManager.shared.currentPreset.rawValue
+        let key = "\(size)_\(design.key)_\(weight.key)_\(width.key)_\(traits.rawValue)_\(presetKey)"
         
         if let cachedFont = self.cache.get(key) {
             return cachedFont
         }
+        
+        if TeleXFontManager.shared.currentPreset != .system, design == .regular {
+            let isItalic = traits.contains(.italic)
+            let isBold = weight.isBold || weight == .heavy
+            if let customFont = TeleXFontManager.shared.customFont(size: size, isBold: isBold, isItalic: isItalic) {
+                self.cache.set(customFont, key: key)
+                return customFont
+            }
+        }
+        
         if #available(iOS 13.0, *), design != .camera {
             let descriptor: UIFontDescriptor
             if #available(iOS 14.0, *) {
@@ -281,23 +292,19 @@ public struct Font {
     }
     
     public static func regular(_ size: CGFloat) -> UIFont {
-        return UIFont.systemFont(ofSize: size)
+        return self.with(size: size, design: .regular, weight: .regular, traits: [])
     }
     
     public static func medium(_ size: CGFloat) -> UIFont {
-        return UIFont.systemFont(ofSize: size, weight: UIFont.Weight.medium)
+        return self.with(size: size, design: .regular, weight: .medium, traits: [])
     }
     
     public static func semibold(_ size: CGFloat) -> UIFont {
-        return UIFont.systemFont(ofSize: size, weight: UIFont.Weight.semibold)
+        return self.with(size: size, design: .regular, weight: .semibold, traits: [])
     }
     
     public static func bold(_ size: CGFloat) -> UIFont {
-        if #available(iOS 8.2, *) {
-            return UIFont.boldSystemFont(ofSize: size)
-        } else {
-            return CTFontCreateWithName("HelveticaNeue-Bold" as CFString, size, nil)
-        }
+        return self.with(size: size, design: .regular, weight: .bold, traits: [])
     }
     
     public static func heavy(_ size: CGFloat) -> UIFont {
@@ -305,15 +312,11 @@ public struct Font {
     }
     
     public static func light(_ size: CGFloat) -> UIFont {
-        return UIFont.systemFont(ofSize: size, weight: UIFont.Weight.light)
+        return self.with(size: size, design: .regular, weight: .light, traits: [])
     }
     
     public static func semiboldItalic(_ size: CGFloat) -> UIFont {
-        if let descriptor = UIFont.systemFont(ofSize: size).fontDescriptor.withSymbolicTraits([.traitBold, .traitItalic]) {
-            return UIFont(descriptor: descriptor, size: size)
-        } else {
-            return UIFont.italicSystemFont(ofSize: size)
-        }
+        return self.with(size: size, design: .regular, weight: .semibold, traits: [.italic])
     }
     
     public static func monospace(_ size: CGFloat) -> UIFont {
@@ -333,7 +336,7 @@ public struct Font {
     }
     
     public static func italic(_ size: CGFloat) -> UIFont {
-        return UIFont.italicSystemFont(ofSize: size)
+        return self.with(size: size, design: .regular, weight: .regular, traits: [.italic])
     }
 }
 

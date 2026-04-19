@@ -25,6 +25,8 @@ enum SettingsSection: Int, CaseIterable {
     case advanced
     case payment
     case extra
+    case telexTheme
+    case telexFont
     case support
 }
 
@@ -318,6 +320,47 @@ func settingsItems(data: PeerInfoScreenData?, context: AccountContext, presentat
         }
     }
     
+    // MARK: - TeleX Theme Section
+    let currentThemePreset = TeleXThemeManager.shared.currentPreset
+    
+    items[.telexTheme]!.append(PeerInfoScreenDisclosureItem(id: 0, label: currentThemePreset == .original ? .text("✓") : .none, text: "💬  Оригинал", hasArrow: false, action: {
+        TeleXThemeManager.shared.applyTheme(preset: .original, context: context)
+    }))
+    items[.telexTheme]!.append(PeerInfoScreenDisclosureItem(id: 1, label: currentThemePreset == .icq ? .text("✓") : .none, text: "🌸  ICQ", hasArrow: false, action: {
+        TeleXThemeManager.shared.applyTheme(preset: .icq, context: context)
+    }))
+    items[.telexTheme]!.append(PeerInfoScreenDisclosureItem(id: 2, label: currentThemePreset == .vk ? .text("✓") : .none, text: "💙  ВКонтакте", hasArrow: false, action: {
+        TeleXThemeManager.shared.applyTheme(preset: .vk, context: context)
+    }))
+    items[.telexTheme]!.append(PeerInfoScreenCommentItem(id: 3, text: "Тема TeleX"))
+    
+    // MARK: - TeleX Font Section
+    let currentFontPreset = TeleXFontManager.shared.currentPreset
+    
+    items[.telexFont]!.append(PeerInfoScreenDisclosureItem(id: 0, label: currentFontPreset == .system ? .text("✓") : .none, text: "System", hasArrow: false, action: {
+        TeleXFontManager.shared.currentPreset = .system
+    }))
+    items[.telexFont]!.append(PeerInfoScreenDisclosureItem(id: 1, label: currentFontPreset == .tahoma ? .text("✓") : .none, text: "Tahoma", hasArrow: false, action: {
+        TeleXFontManager.shared.currentPreset = .tahoma
+    }))
+    items[.telexFont]!.append(PeerInfoScreenDisclosureItem(id: 2, label: currentFontPreset == .verdana ? .text("✓") : .none, text: "Verdana", hasArrow: false, action: {
+        TeleXFontManager.shared.currentPreset = .verdana
+    }))
+    items[.telexFont]!.append(PeerInfoScreenDisclosureItem(id: 3, label: currentFontPreset == .segoeUI ? .text("✓") : .none, text: "Segoe UI", hasArrow: false, action: {
+        TeleXFontManager.shared.currentPreset = .segoeUI
+    }))
+    items[.telexFont]!.append(PeerInfoScreenDisclosureItem(id: 4, label: currentFontPreset == .comicSans ? .text("✓") : .none, text: "Comic Sans", hasArrow: false, action: {
+        TeleXFontManager.shared.currentPreset = .comicSans
+    }))
+    items[.telexFont]!.append(PeerInfoScreenDisclosureItem(id: 5, label: currentFontPreset == .firaCode ? .text("✓") : .none, text: "Fira Code", hasArrow: false, action: {
+        TeleXFontManager.shared.currentPreset = .firaCode
+    }))
+    items[.telexFont]!.append(PeerInfoScreenDisclosureItem(id: 6, label: currentFontPreset == .georgia ? .text("✓") : .none, text: "Georgia", hasArrow: false, action: {
+        TeleXFontManager.shared.currentPreset = .georgia
+    }))
+    items[.telexFont]!.append(PeerInfoScreenCommentItem(id: 7, text: "Шрифт приложение. Примечание: для надежного применения шрифтов необходимо перезапустить приложение."))
+    
+    // MARK: - Support Section
     items[.support]!.append(PeerInfoScreenDisclosureItem(id: 0, text: presentationData.strings.Settings_Support, icon: PresentationResourcesSettings.support, action: {
         interaction.openSettings(.support)
     }))
