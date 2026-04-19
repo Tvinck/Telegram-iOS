@@ -365,7 +365,7 @@ func settingsItems(data: PeerInfoScreenData?, context: AccountContext, presentat
     items[.telexGeneral]!.append(PeerInfoScreenDisclosureItem(id: 0, text: "🎵 Музыка (Стриминг)", icon: PresentationResourcesSettings.proxy, action: {
         NotificationCenter.default.post(name: NSNotification.Name("OpenTeleXMusic"), object: nil)
     }))
-    items[.telexGeneral]!.append(PeerInfoScreenDisclosureItem(id: 1, text: "Версии TeleX", icon: PresentationResourcesSettings.info, action: {
+    items[.telexGeneral]!.append(PeerInfoScreenDisclosureItem(id: 1, text: "Версии TeleX", icon: PresentationResourcesSettings.tips, action: {
         NotificationCenter.default.post(name: NSNotification.Name("OpenTeleXVersions"), object: nil)
     }))
     items[.telexGeneral]!.append(PeerInfoScreenCommentItem(id: 2, text: "Экспериментальные функции TeleX (Музыка, История версий)."))
